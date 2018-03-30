@@ -1,0 +1,21 @@
+{
+  "name": "alexa-upnp-device-emulator",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Simple Alexa device emulator",
+  "main": "web.js",
+  "scripts": {
+    "server": "node server.js",
+    "client": "node client.js",
+    "web": "node web.js"
+  },
+  "author": "Fernando Giovanini",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "dgram": "^1.0.1",
+    "express": "^4.16.3",
+    "node-ssdp": "^3.2.5",
+    "node-upnp-ssdp": "^0.1.1"
+  }
+}
