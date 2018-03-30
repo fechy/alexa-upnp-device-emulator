@@ -1,5 +1,5 @@
-const NAME = 'Fechy';
-const UUID = 'FECHY-1234567890';
+const NAME = 'emulated switch';
+const UUID = 'EMUSWITCH-1234567890';
 const descriptionFile = 'description.xml';
 
 module.exports = {

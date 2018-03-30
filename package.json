@@ -6,8 +6,9 @@
   "main": "web.js",
   "scripts": {
     "server": "node server.js",
+    "server-debug": "DEBUG=node-ssdp:server node server.js",
     "client": "node client.js",
-    "web": "node web.js"
+    "api": "node web.js"
   },
   "author": "Fernando Giovanini",
   "license": "ISC",
