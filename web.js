@@ -5,7 +5,7 @@ const app = express();
 const port = process.env.PORT || 8080; // If changed, it should also be changed in the server
 
 // Project imports
-const { name, uuid, descriptionFile } = require('./specs/const');
+const { name, uuid, descriptionFile, eventServiceFile } = require('./specs/const');
 const Device = require('./src/device');
 const Handler = require('./src/handler');
 
@@ -14,6 +14,8 @@ const device = new Device(name, uuid);
 const requestHandler = new Handler(device);
 
 const descriptionXML = require('./specs/description');
+const eventServiceXML = require('./specs/eventService');
+const { getBinaryStateResponse, setBinaryStateResponse } = require('./src/deviceResponses');
 
 /**
  * Simple Soap Action parser
@@ -37,31 +39,36 @@ app.use(bodyParser.json());
 // Calls to this endpoint will be made after contacting the server via M-SEARCH 
 app.get(`/${descriptionFile}`, (request, response) => {
     console.log(request.originalUrl, request.headers, request.body);
-    response.header("Content-Type", "text/xml")
+    response.status(200)
+            .header("Content-Type", "text/xml")
             .send(descriptionXML(device.name, device.uuid));
+});
+
+// Currently without use
+app.get(`/${eventServiceFile}`, (request, response) => {
+    console.log(request.originalUrl, request.headers, request.body);
+    response.status(200)
+            .header("Content-Type", "text/xml")
+            .send(eventServiceXML());
 });
 
 // Alexa will call this enpoint with the soap action and we should return an envelope with the result
 app.post('/upnp/control/basicevent1', (request, response) => {
+    const action = getSoapAction(request.headers.soapaction);
+    const value  = requestHandler.handle(action);
+
+    const result = action == 'GetBinaryState' ? getBinaryStateResponse(value) : setBinaryStateResponse(value);
+
     console.log(request.originalUrl, request.headers, request.body);
 
-    const action = getSoapAction(request.headers.soapaction);
-    const value = requestHandler.handle(action);
-
-    response.status(200).send(`
-        <s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
-            <s:Body>
-                <u:SetBinaryStateResponse xmlns:u="urn:Belkin:service:basicevent:1">
-                <CountdownEndTime>${value}</CountdownEndTime>
-                </u:SetBinaryStateResponse>
-            </s:Body>
-        </s:Envelope>
-    `);
+    response.status(200)
+            .header("Content-Type", "text/xml")
+            .send(result); 
 });
 
 // Just for debug, to check whats being asked...
 app.get('*', (request, response) => {
-    console.log(request.originalUrl);
+    console.log(request.originalUrl, request.headers);
     response.status(200).send('');
 });
 

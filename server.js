@@ -11,9 +11,9 @@ const server = new Server({
     sourcePort: 1900
 });
 
-server.addUSN('upnp:rootdevice');
+// server.addUSN('upnp:rootdevice');
 server.addUSN('urn:Belkin:device:**');
-server.addUSN('ssdp:all');
+// server.addUSN('ssdp:all');
 server.addUSN('ssdp:discovery');
 
 // server.on('notify', (...props) => console.log('Notify', props));
