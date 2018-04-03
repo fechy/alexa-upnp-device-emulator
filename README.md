@@ -7,7 +7,7 @@ For instance, the default device emulated is a Belkin Switch which has 2 states:
 
 This allow us to call the API from within Alexa and turn on/off our emulated switch.
 
-It is important to point out that no Alexa skill is necessary.
+It is important to point out that **no Alexa skill is necessary**.
 
 ## Setup
 
@@ -42,15 +42,17 @@ If you want to know what's the script doing, run like this:
 npm run server-debug
 ```
 
-... and other window with the web API:
+... and other window with the web API and a simple UI:
 
 ```bash
-npm run api
+npm run start
 ```
+
+This will enable a simple UI located in `localhost:8080` showing the status of the emulated switch.
 
 Once you have both scripts running, run "discover devices" on Alexa, either by the Alexa app or telling alexa to "discover devices".
 
-Once the device is dicovered (The name can be changed on `specs/const.js`; default is "emulated switch"). Now you should be able to turn on/off the device and the calls should be outputted in the API's console.
+Once the device is dicovered (The name can be changed on `specs/const.js`; default is "emulated switch"). Now you should be able to turn on/off the device and the calls should be outputted in the API's console and displayed on the UI.
 
 ## Throubleshooting
 

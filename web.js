@@ -30,15 +30,43 @@ const getSoapAction = function (soapaction) {
     return parts[1].replace('"', '');
 }
 
+const server = app.listen(port, (err) => {
+    if (err) {
+        return console.log('something bad happened', err);
+    }
+
+    console.log(`server is listening on ${port}`);
+});
+
+const io = require('socket.io')(server);
+
+// Set socket.io listeners.
+io.on('connection', (socket) => {
+    // console.log('user connected');
+    socket.on('disconnect', () => {
+        // console.log('user disconnected');
+    });
+});
+
+app.use(express.static('static'));
+
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // parse application/json
 app.use(bodyParser.json());
 
+// Web GUI
+app.get('/', (request, response) => {
+    response.sendFile(__dirname + '/index.html');
+});
+
 // Calls to this endpoint will be made after contacting the server via M-SEARCH 
 app.get(`/${descriptionFile}`, (request, response) => {
     console.log(request.originalUrl, request.headers, request.body);
+
+    io.emit('request-setup', { host: request.get('host'), headers: request.headers });
+
     response.status(200)
             .header("Content-Type", "text/xml")
             .send(descriptionXML(device.name, device.uuid));
@@ -47,6 +75,9 @@ app.get(`/${descriptionFile}`, (request, response) => {
 // Currently without use
 app.get(`/${eventServiceFile}`, (request, response) => {
     console.log(request.originalUrl, request.headers, request.body);
+
+    io.emit('request-service', { host: request.get('host'), headers: request.headers });
+
     response.status(200)
             .header("Content-Type", "text/xml")
             .send(eventServiceXML());
@@ -61,27 +92,21 @@ app.post('/upnp/control/basicevent1', (request, response) => {
 
     console.log(request.originalUrl, request.headers, request.body);
 
+    io.emit('request-action', { host: request.get('host'), headers: request.headers, action, result: value });
+
     response.status(200)
             .header("Content-Type", "text/xml")
             .send(result); 
 });
 
 // Just for debug, to check whats being asked...
-app.get('*', (request, response) => {
-    console.log(request.originalUrl, request.headers);
-    response.status(200).send('');
-});
+// app.get('*', (request, response) => {
+//     console.log(request.originalUrl, request.headers);
+//     response.status(200).send('');
+// });
 
 // Just for debug, to check whats being asked...
 app.post('*', (request, response) => {
     console.log(request.originalUrl, request.body);
     response.status(200).send('');
-});
-
-app.listen(port, (err) => {
-  if (err) {
-    return console.log('something bad happened', err)
-  }
-
-  console.log(`server is listening on ${port}`)
 });
