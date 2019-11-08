@@ -18,17 +18,17 @@
     "css-loader": "^3.2.0",
     "dgram": "^1.0.1",
     "express": "^4.17.1",
-    "node-ssdp": "^3.3.0",
+    "node-ssdp": "^4.0.0",
     "node-upnp-ssdp": "^0.1.1",
     "npm": "^6.13.0",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
     "socket.io": "^2.3.0",
-    "style-loader": "^0.20.3"
+    "style-loader": "^1.0.0"
   },
   "devDependencies": {
-    "babel-core": "^6.26.3",
-    "babel-loader": "^7.1.5",
+    "babel-core": "6.26.3",
+    "babel-loader": "7.1.5",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "classnames": "^2.2.6",
