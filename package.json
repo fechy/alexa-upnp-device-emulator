@@ -20,7 +20,7 @@
     "express": "^4.17.1",
     "node-ssdp": "^4.0.0",
     "node-upnp-ssdp": "^0.1.1",
-    "npm": "^6.13.0",
+    "npm": "^6.13.4",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
     "socket.io": "^2.3.0",
