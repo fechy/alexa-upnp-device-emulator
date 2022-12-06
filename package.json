@@ -14,10 +14,10 @@
   "author": "Fernando Giovanini",
   "license": "ISC",
   "dependencies": {
-    "body-parser": "^1.19.0",
+    "body-parser": "^1.20.1",
     "css-loader": "^3.2.0",
     "dgram": "^1.0.1",
-    "express": "^4.17.1",
+    "express": "^4.18.2",
     "node-ssdp": "^4.0.0",
     "node-upnp-ssdp": "^0.1.1",
     "npm": "^6.14.6",
